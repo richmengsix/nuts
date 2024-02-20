@@ -10,6 +10,11 @@ describe('Platforms', function() {
             platforms.detect('myapp.dmg').should.be.exactly(platforms.OSX_64);
         });
 
+        it('should detect osx_arm64', function() {
+            platforms.detect('myapp-v0.25.1-darwin-arm64.zip').should.be.exactly(platforms.OSX_ARM64);
+            platforms.detect('myapp-1.4.2-arm64.dmg').should.be.exactly(platforms.OSX_ARM64);
+        });
+
         it('should detect windows_32', function() {
             platforms.detect('myapp-v0.25.1-win32-ia32.zip').should.be.exactly(platforms.WINDOWS_32);
             platforms.detect('atom-1.0.9-delta.nupkg').should.be.exactly(platforms.WINDOWS_32);
@@ -55,6 +60,12 @@ describe('Platforms', function() {
                     'filename': 'test-3.3.1-darwin-x64.zip',
                     'download_url': 'https://api.github.com/repos/test/test2/releases/assets/793869',
                     'download_count': 0
+                },
+                {
+                    'type': 'osx_arm64',
+                    'filename': 'test-3.3.1-arm64.dmg',
+                    'download_url': 'https://api.github.com/repos/test/test2/releases/assets/793838',
+                    'download_count': 2
                 },
                 {
                     'type': 'windows_32',
@@ -142,6 +153,7 @@ describe('Platforms', function() {
 
         it('should resolve to best platform', function() {
             platforms.resolve(version, 'osx').filename.should.be.exactly('test-3.3.1-darwin.dmg');
+            platforms.resolve(version, 'osx_arm64').filename.should.be.exactly('test-3.3.1-arm64.dmg');
             platforms.resolve(version, 'win32').filename.should.be.exactly('AtomSetup.exe');
             platforms.resolve(version, 'linux_64').filename.should.be.exactly('atom-amd64.tar.gz');
             platforms.resolve(version, 'linux_32').filename.should.be.exactly('atom-ia32.tar.gz');
